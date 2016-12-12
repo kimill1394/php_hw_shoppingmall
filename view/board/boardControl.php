@@ -71,7 +71,7 @@ BOARDLIST;
   $files = array();
   if (!$stt) {
     while($file = $stt->fetch()) {
-      
+      array_push($)
     }
   }
   $board = $boardController->readItem($_GET['no']);
