@@ -1,0 +1,4 @@
+ryan.jpg {
+    #c9c9c9 회색
+    #ffbd2d 노랑
+}
