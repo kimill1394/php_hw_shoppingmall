@@ -37,7 +37,6 @@ create table kindofsheep(
 create table styleofsheep(
   styleno int,
   stylename varchar(255),
-  styleimg varchar(300),
   PRIMARY KEY(styleno)
 );
 -- 1/흰색 플레인램/-
@@ -62,10 +61,11 @@ create table itemstatus(
 );
 -- 1/신제품/-
 
-create table allofsheep(
+create table allfsheep(
   sheepno int,
   sheepprice int,
   sheepsalerate decimal,
+  sheepimg varchar(300),
   sheepstatusno int,
   sheepstar int,
   buycount int,
@@ -132,19 +132,11 @@ create table free(
 
 
 create table bucketlist(
-  userid,
-  sheepno,
+  userid varchar(255),
+  sheepno int,
   FOREIGN KEY(userid) REFERENCES user(userid),
   FOREIGN KEY(sheepno) REFERENCES allofsheep(sheepno)
 );
-
-create table order(
-  orderno,
-  orderuser,
-  orderdate,
-  ordersheep,
-
-)
 
 create table shoppinglist(
   shoppingno int,

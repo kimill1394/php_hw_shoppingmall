@@ -18,14 +18,23 @@ if(strpos($_SERVER['SCRIPT_NAME'],'write')) {
       $userid = $_SESSION['user']['userid'];
       $no = $_GET['no'];
       $upfiles = $_FILES['upfile'];
-      $boardController->insert($title, $content, $userid, $no, $upfiles);
+      isset($_POST['delfile'])?$delfiles = $_POST['delfile']: $delfiles=array();
+      $boardController->insert($title, $content, $userid, $no, $upfiles, $delfiles);
       break;
     case 'delete':
       $no = $_GET['no'];
       $boardController->delete($no);
     default:
-    if(isset($_GET['no'])) // mode=modify
+    if(isset($_GET['no'])) {// mode=modify
       $board = $boardController->readItem($_GET['no']);
+      $stt = $boardController->readfile($_GET['no']);
+      $files = array();
+      if ($stt) {
+        while($file = $stt->fetch(PDO::FETCH_ASSOC)) {
+          array_push($files, $file);
+        }
+      }
+    }
     else $board = false; // mode=insert
     if(!$board) {
       // 없는 게시물을 가져온 경우, 게시물 번호가 없는 경우(처음 쓰는 글)
@@ -34,17 +43,25 @@ if(strpos($_SERVER['SCRIPT_NAME'],'write')) {
     } else { // 게시물이 있는 경우
       $title = $board['freetitle'];
       $content = $board['freecontent'];
-      $super = $board['freesuper'];
+      // $super = $board['freesuper'];
       $no = $_GET['no'];
     }
-    echo <<<BOARD
-      <form action="./write.php?mode=insert&no=$no" method="post" enctype="multipart/form-data">
-        <input type="text" name="title" value="$title">
-        <textarea name="content" id="" cols="30" rows="10">$content</textarea>
-        <input type="file" name="upfile[]"></input>
-        <input type="submit" value="write">
-      </form>
-BOARD;
+    echo "<form action='./write.php?mode=insert&no=$no' method='post' enctype='multipart/form-data'>
+          <input type='text' name='title' value='$title'>
+          <textarea name='content' id=' cols='30' rows='10'>$content</textarea>
+          <input type='file' multiple name='upfile[]'></input>
+          <input type='submit' value='write'>";
+    if($board) {
+      echo "<table>";
+      for ($i=0; $i<count($files); $i++){
+        echo ("<tr>
+          <td><input type='checkbox' name='delfile[{$files[$i]['filename']}]'></td>
+          <td>{$files[$i]['filename']}</td>
+        </tr>");
+      }
+      echo "</table>";
+    }
+        echo "</form>";
       # code...
       break;
   }
@@ -69,9 +86,9 @@ BOARDLIST;
 } elseif(strpos($_SERVER['SCRIPT_NAME'],'read')) {
   $stt = $boardController->readfile($_GET['no']);
   $files = array();
-  if (!$stt) {
-    while($file = $stt->fetch()) {
-      array_push($)
+  if ($stt) {
+    while($file = $stt->fetch(PDO::FETCH_ASSOC)) {
+      array_push($files, $file);
     }
   }
   $board = $boardController->readItem($_GET['no']);
@@ -80,9 +97,20 @@ BOARDLIST;
   $date = $board['freedate'];
   $title = $board['freetitle'];
   $content = $board['freecontent'];
-
   require_once "./HTMLREAD.php";
 
+    if(isset($_GET['mode'])) {
+
+      Header("Location: ./download.php?name=$name");
+
+    }
+
+// } else {
+//   $sql = "select * from file where filename=:name";
+//   $stt = $this->dbo->prepare($sql);
+//   echo $_GET['name'];
+//   $stt->execute(array("name"=>$_GET['name']));
+//   return
 }
 
 

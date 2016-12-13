@@ -10,7 +10,9 @@ class ListController{
   }
 
   public function getProduct($category) {
-    $sql = "select lc.listcategoryname, sos.styleimg, sos.stylename, ist.itemstatusname, aos.sheepstar, aos.sheepprice, sheep.sheepno from listcategory lc, allofsheep aos, styleofsheep sos, itemstatus ist, sheep where aos.sheepno = sheep.sheepno and sheep.styleno=sos.styleno and aos.sheepstatusno=ist.itemstatusno and lc.listcategoryno=:category";
+    // 리니지 버림(ㅛㅏ류ㅜㄴ ㅛㅏㅅ데)
+    $sql = "select lc.listcategoryname, sos.styleimg, sos.stylename, ist.itemstatusname, aos.sheepstar, aos.sheepprice, sheep.sheepno
+    from listcategory lc, allofsheep aos, styleofsheep sos, itemstatus ist, sheep where aos.sheepno = sheep.sheepno and sheep.styleno=sos.styleno and aos.sheepstatusno=ist.itemstatusno and lc.listcategoryno=:category";
     $stt = $this->dbo->prepare($sql);
     $stt->execute(array("category"=>$category));
     return $stt;

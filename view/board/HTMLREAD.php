@@ -14,7 +14,18 @@ echo <<<HTMLREAD
     <tr>
       <td colspan="3">$content</td>
     </tr>
+HTMLREAD;
+    for ($i=0; $i<count($files); $i++){
+      $name = $files[$i]['filename'];
+      $no=$_GET['no'];
+      echo ("<tr>
+        <td colspan='3'>
+          <a href='./read.php?no=$no&mode=download'>$name</a>
+        </td>
+      </tr>");
+    }
+echo <<<HTMLREAD2
   </table>
 </div>
-HTMLREAD;
+HTMLREAD2;
  ?>
