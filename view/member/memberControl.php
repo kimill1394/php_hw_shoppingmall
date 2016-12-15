@@ -30,7 +30,7 @@ if($_GET['mode']=='buy') {
   if(empty($_POST['name'])) {
     echo "<script>
       alert('양 이름을 정해주세요!');
-      history.go(-1);
+      history.go(-2);
     </script>";
     // 여기 리프레쉬해야됨!!!!!!!!!!!!!!!!!!!!!!
   } else {
@@ -38,11 +38,12 @@ if($_GET['mode']=='buy') {
     $sheepno = $_GET['no'];
     $name = $_POST['name'];
     if($membercontroller->buy($userid, $sheepno, $name)) {
+
       Header("Location: ../mypage/history.php");
     } else echo "<script>
       alert('결제 실패!');
-      history.go(-1);
     </script>";
+    history.go(-2);
   }
 }
 

@@ -5,25 +5,26 @@ $listController = new ListController();
 
 if(strpos($_SERVER['SCRIPT_NAME'],'list')) {
   if(!isset($_GET['category']))
-    $category=2; // default(all)
+    $category=0; // default(all)
   else $category=$_GET['category'];
 
   $stt=$listController->getProduct($category);
   while($row=$stt->fetch()) {
-    $img = $row['styleimg'];
-    $status = $row['itemstatusname'];
-    $title = $row['stylename'];
+    $sheepimg = $row['sheepimg'];
+    $statusimg = $row['itemstatusimg'];
+    $title = $row['sheepname'];
     $star = $row['sheepstar'];
     $price = $row['sheepprice'];
     $no = $row['sheepno'];
+
   echo <<<LIST
   <div class="sheeplist">
     <li class="item">
       <div class="itembox">
         <form action="./detail.php?no=$no" method="POST">
-          <input type="image" src="$img">
+          <input type="image" src="$sheepimg">
           <div class="iteminfo">
-            <div class="status"><img src="" alt="">$status</div>
+            <div class="status"><img src="$statusimg" alt=""></div>
             <p class="itemname">$title</p>
             <p class="star">$star</p>
             <p class="itemprice">$price</p>
@@ -38,16 +39,15 @@ LIST;
   $stt = $listController->getOrder($_SESSION['user']['userid']);
   while($row=$stt->fetch(PDO::FETCH_ASSOC)){
     $date = $row['shoppeddate'];
-    $img = $row['styleimg'];
-    $stylename = $row['stylename'];
-    $sheepname = $row['objsheepname'];
-    $star = $row['objsheepcurstar'];
+    $img = $row['sheepimg'];
+    $stylename = $row['sheepname'];
+    $star = $row['sheepstar'];
   echo <<<ORDERLIST
   <tr>
     <td>$date</td>
     <td><img src=$img></td>
     <td>$stylename</td>
-    <td>$sheepname</td>
+    <td>$stylename</td>
     <td>$star</td>
   </tr>
 ORDERLIST;
@@ -56,12 +56,12 @@ ORDERLIST;
   $itemno = $_GET['no'];
   $stt=$listController->getDetail($itemno);
   $row=$stt->fetch();
-  $img = $row['styleimg'];
-  $title = $row['stylename'];
+  $img = $row['sheepimg'];
+  $title = $row['sheepname'];
   $comment = $row['kindcomment'];
   $price = $row['sheepprice'];
   $star = $row['sheepstar'];
-  $status = $row['itemstatusname'];
+  $statusimg = $row['itemstatusimg'];
   $pluspoint = $price*$_SESSION['user']['userpointrate'];
 
   echo <<<DETAIL
@@ -91,10 +91,6 @@ ORDERLIST;
           <tr>
             <td class="label">품질</td>
             <td>$star</td>
-          </tr>
-          <tr>
-            <td class="label">수량</td>
-            <td>[여기 수량이 표시됨]</td>
           </tr>
           <tr>
             <td class="label">이름</td>

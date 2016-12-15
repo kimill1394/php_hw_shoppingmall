@@ -99,11 +99,6 @@ BOARDLIST;
   $content = $board['freecontent'];
   require_once "./HTMLREAD.php";
 
-    if(isset($_GET['mode'])) {
-
-      Header("Location: ./download.php?name=$name");
-
-    }
 
 // } else {
 //   $sql = "select * from file where filename=:name";

@@ -20,7 +20,7 @@ HTMLREAD;
       $no=$_GET['no'];
       echo ("<tr>
         <td colspan='3'>
-          <a href='./read.php?no=$no&mode=download'>$name</a>
+          <a href='./download.php?name=$name'>$name</a>
         </td>
       </tr>");
     }
